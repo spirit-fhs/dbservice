@@ -1,5 +1,17 @@
 Dbservice using jpa reference implementation eclipselink 2.3 as ORM for postgresql. Also include Lift framework to provide a RESTful access. 
 
+
+protection:
+
+to protect some critical urls customize boot.scala to:
+
+    LiftRules.httpAuthProtectedResource.append {
+      case Req(_ :: _, _, PutRequest) => roles.getRoleByName("Standard")
+      case Req(_ :: _, _, PostRequest) => roles.getRoleByName("Standard")
+      case Req(_ :: _, _, DeleteRequest) => roles.getRoleByName("Standard")
+      case Req("protected" :: Nil, _, _) => roles.getRoleByName("Standard")
+    }
+
 startup:
 
 1. change credentials in src\main\resources\META-INF\persistence.xml
