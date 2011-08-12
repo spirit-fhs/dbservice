@@ -1,0 +1,465 @@
+<?xml version="1.0"?>
+<entity-mappings
+        xsi:schemaLocation="http://www.eclipse.org/eclipselink/xsds/persistence/orm xsd/eclipselink_orm_2_2.xsd"
+        xmlns="http://www.eclipse.org/eclipselink/xsds/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0">
+
+    <entity class="code.model.Member">
+        <table name="member"/>
+        <named-query name="getMemberById">
+            <query>
+                SELECT m FROM Member m WHERE m.fhs_id= :fhs_id
+            </query>
+        </named-query>
+        <attributes>
+            <id name="fhs_id">
+                <column name="fhs_id"/>
+            </id>
+            <basic name="displayedName"/>
+            <basic name="memberType" length="20">
+                <column name="memberType"/>
+            </basic>
+            <one-to-many name="comment" mapped-by="owner">
+                <cascade-on-delete>true</cascade-on-delete>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+            <one-to-many name="event" mapped-by="member">
+                <cascade-on-delete>true</cascade-on-delete>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+            <one-to-many name="news" mapped-by="owner">
+                <cascade-on-delete>true</cascade-on-delete>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+            <many-to-many name="degreeClass" orphan-removal="true">
+                <cascade-on-delete>true</cascade-on-delete>
+                <join-table>
+                    <join-column name="fhs_id"/>
+                    <inverse-join-column name="degree_class_id"/>
+                </join-table>
+            </many-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="code.model.NewsComment">
+        <table name="NewsComment"/>
+        <named-query name="getCommentById">
+            <query>
+                SELECT nc FROM NewsComment nc WHERE nc.comment_id= :comment_id
+            </query>
+        </named-query>
+        <pre-persist method-name="prePersist"/>
+        <attributes>
+            <id name="comment_id">
+                <sequence-generator name="seq_newscomment" sequence-name="seq_newscomment" initial-value="1"
+                                    allocation-size="1"/>
+                <generated-value generator="seq_newscomment"/>
+                <column name="comment_id"/>
+            </id>
+            <basic name="content">
+                <column length="5000"/>
+            </basic>
+            <basic name="creationDate">
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <many-to-one name="owner">
+                <join-column name="fhs_id"/>
+            </many-to-one>
+            <many-to-one name="news">
+                <join-column name="news_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+
+    <entity class="code.model.News">
+        <table name="News"/>
+        <named-query name="getNewsById">
+            <query>
+                SELECT n FROM News n WHERE n.news_id = :news_id
+            </query>
+        </named-query>
+        <pre-persist method-name="prePersist"/>
+        <pre-update method-name="preUpdate"/>
+        <attributes>
+            <id name="news_id">
+                <sequence-generator name="seq_news" sequence-name="seq_news" initial-value="1" allocation-size="1"/>
+                <generated-value generator="seq_news"/>
+                <column name="news_id"/>
+            </id>
+            <basic name="content">
+                <column length="5000"/>
+            </basic>
+            <basic name="creationDate">
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <basic name="expireDate">
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <basic name="lastModified">
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <many-to-one name="owner">
+                <join-column name="fhs_id"/>
+            </many-to-one>
+            <many-to-many name="degreeClass" orphan-removal="true" nullable="true">
+                <cascade-on-delete>true</cascade-on-delete>
+                <join-table>
+                    <join-column name="news_id"/>
+                    <inverse-join-column name="class_id"/>
+                </join-table>
+            </many-to-many>
+            <one-to-many name="comment" mapped-by="news">
+                <cascade-on-delete>true</cascade-on-delete>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="code.model.DegreeClass">
+        <table name="DegreeClass"/>
+        <named-query name="getDegreeClassById">
+            <query>
+                SELECT dc FROM DegreeClass dc WHERE dc.class_id = :class_id
+            </query>
+        </named-query>
+        <attributes>
+            <id name="class_id">
+                <sequence-generator name="seq_degreeclass" sequence-name="seq_degreeclass" initial-value="1"
+                                    allocation-size="1"/>
+                <generated-value generator="seq_degreeclass"/>
+                <column name="class_id"/>
+            </id>
+            <basic name="title" length="50"/>
+            <basic name="mail" length="50"/>
+            <basic name="classType" length="20">
+                <column name="classType"/>
+            </basic>
+            <one-to-many name="subClasses">
+                <cascade-on-delete>true</cascade-on-delete>
+                <private-owned/>
+                <join-column name="parent_id"/>
+            </one-to-many>
+
+            <one-to-one name="parent">
+                <cascade-on-delete>true</cascade-on-delete>
+                <private-owned/>
+                <join-column name="parent_id"/>
+            </one-to-one>
+
+
+            <many-to-many name="news" mapped-by="degreeClass">
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </many-to-many>
+            <many-to-many name="event" mapped-by="degreeClass">
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </many-to-many>
+            <many-to-many name="member" mapped-by="degreeClass">
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </many-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="code.model.Event">
+        <table name="Event"/>
+        <named-query name="getEventById">
+            <query>
+                SELECT e FROM Event e WHERE e.event_id= :event_id
+            </query>
+        </named-query>
+        <attributes>
+            <id name="event_id">
+                <sequence-generator name="seq_event" sequence-name="seq_event" initial-value="1" allocation-size="1"/>
+                <generated-value generator="seq_event"/>
+                <column name="event_id"/>
+            </id>
+            <basic name="expireDate">
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <basic name="eventType" length="20">
+                <column name="eventType"/>
+            </basic>
+            <basic name="titleShort" length="10"/>
+            <basic name="titleLong" length="50"/>
+            <one-to-many name="member" mapped-by="event">
+                <cascade-on-delete>true</cascade-on-delete>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+            <one-to-many name="appointment" mapped-by="event">
+                <cascade-on-delete>true</cascade-on-delete>
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </one-to-many>
+            <many-to-many name="degreeClass" orphan-removal="true">
+                <cascade-on-delete>true</cascade-on-delete>
+                <join-table>
+                    <join-column name="event_id"/>
+                    <inverse-join-column name="class_id"/>
+                </join-table>
+            </many-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="code.model.MemberEvent">
+        <id-class class="code.model.MemberEventPK"/>
+        <table name="member_event"/>
+        <attributes>
+            <many-to-one name="member" id="true">
+                <join-column name="fhs_id"/>
+            </many-to-one>
+            <basic name="qualifier"/>
+            <many-to-one name="event" id="true">
+                <join-column name="event_id"/>
+            </many-to-one>
+        </attributes>
+    </entity>
+
+    <entity class="code.model.Location">
+        <named-query name="getLocationById">
+            <query>
+                SELECT l FROM Location l WHERE l.room= :room AND l.building = :building
+            </query>
+        </named-query>
+        <id-class class="code.model.LocationPK"/>
+        <attributes>
+            <id name="building">
+                <column name="building"/>
+            </id>
+            <id name="room">
+                <column name="room"/>
+            </id>
+            <many-to-many name="appointment" mapped-by="location">
+                <cascade>
+                    <cascade-all/>
+                </cascade>
+            </many-to-many>
+        </attributes>
+    </entity>
+
+    <entity class="code.model.Appointment">
+        <named-query name="getAppointmentById">
+            <query>
+                SELECT a FROM Appointment a WHERE a.appointment_id= :appointment_id
+            </query>
+        </named-query>
+        <pre-persist method-name="prePersist"/>
+        <attributes>
+            <id name="appointment_id">
+                <sequence-generator name="seq_appointment" sequence-name="seq_appointment" initial-value="1"
+                                    allocation-size="1"/>
+                <generated-value generator="seq_appointment"/>
+                <column name="appointment_id"/>
+            </id>
+            <one-to-one name="childAppointment" orphan-removal="true" nullable="true">
+                <cascade-on-delete>true</cascade-on-delete>
+                 <join-table name="appointment_childAppointment">
+                    <join-column name="appointment_parent_id"/>
+                    <inverse-join-column name="appointment_child_id"/>
+                 </join-table>
+            </one-to-one>
+            <basic name="startAppointment">
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <basic name="endAppointment">
+                <temporal>TIMESTAMP</temporal>
+            </basic>
+            <basic name="status" length="20"/>
+            <many-to-one name="event">
+                <join-column name="event_id"/>
+            </many-to-one>
+            <many-to-many name="location" orphan-removal="true" nullable="true">
+                <cascade-on-delete>true</cascade-on-delete>
+                <join-table>
+                    <join-column name="appointment_id"/>
+                    <inverse-join-column name="building_id" referenced-column-name="building"/>
+                    <inverse-join-column name="room_id" referenced-column-name="room"/>
+                </join-table>
+            </many-to-many>
+        </attributes>
+    </entity>
+
+
+</entity-mappings>
+
+        <!--
+        <entity class="code.model.Test">
+            <attributes>
+                <id name="id">
+                    <column name="test_id"/>
+                </id>
+                <basic name="data"/>
+                <one-to-one name="child" orphan-removal="true">
+                    <cascade-on-delete>true</cascade-on-delete>
+                    <join-table name="test_child">
+                        <join-column name="test_id"/>
+                        <inverse-join-column name="child_id"/>
+                    </join-table>
+                </one-to-one>
+            </attributes>
+        </entity>
+        -->
+
+        <!-- Test mit selbstreferenz mit one-to-one. Mit parent ID ungünstig, da verweis auf altes appointments besteht, aber neuer termin gefragt wird. Desshalb besser childId machen-->
+        <!--
+        <entity class="code.model.Test">
+            <attributes>
+                <id name="id">
+                    <column name="test_id"/>
+                </id>
+                <basic name="data"/>
+                <one-to-one name="parent" orphan-removal="true">
+                    <cascade-on-delete>true</cascade-on-delete>
+                    <join-table name="test_parent">
+                        <join-column name="test_id"/>
+                        <inverse-join-column name="parent_id"/>
+                    </join-table>
+                </one-to-one>
+            </attributes>
+        </entity>
+        -->
+
+        <!-- Unidirektional JPA 2.0 ohne JoinTable-->
+        <!--
+        <entity class="code.model.Test2">
+            <attributes>
+                <id name="id">
+                    <column name="test2_id"/>
+                </id>
+                <basic name="data"/>
+                <one-to-many name="tests" orphan-removal="false" target-entity="code.model.Test">
+                    <join-column name="test2_id"/>
+                </one-to-many>
+            </attributes>
+        </entity>
+        -->
+        <!-- Unidirektional nacj JPA 1.0 mit JoinTable -->
+        <!--
+        <entity class="code.model.Test2">
+            <attributes>
+                <id name="id">
+                    <column name="test2_id"/>
+                </id>
+                <basic name="data"/>
+                <one-to-many name="tests">
+                <join-table name="test_test2">
+                  <join-column name="test2_id"/>
+                  <inverse-join-column name="test_id"/>
+                </join-table>
+                </one-to-many>
+            </attributes>
+        </entity>
+        -->
+
+        <!--<id name="member_event_id"/>-->
+        <!--<many-to-one name="member">-->
+        <!--<join-column name="member_id"/>-->
+        <!--</many-to-one>-->
+
+        <!--<many-to-one name="event">-->
+        <!--<join-column name="ID"/>-->
+        <!--</many-to-one>-->
+        <!--<basic name="qualifier" length="20"/>-->
+
+
+        <!-- Embedded Id geht nicht für many-to-one. Es sind nur Basic Attribute erlaubt -->
+
+        <!--<entity class="code.model.MemberEvent>-->
+        <!--<association-override name="pk.member">-->
+        <!--<join-column name="member_id"/>-->
+        <!--</association-override>-->
+        <!--<association-override name="pk.event">-->
+        <!--<join-column name="ID"/>-->
+        <!--</association-override>-->
+        <!--<attributes>-->
+        <!--&lt;!&ndash;<id name="fk_member_1"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;<id name="fk_event_1"/>&ndash;&gt;-->
+        <!--<embedded-id name="pk"/>-->
+        <!--<basic name="qualifier" length="20"/>-->
+        <!--</attributes>-->
+        <!--</entity>-->
+
+        <!--<embeddable class="code.model.Member_Event_PK">-->
+        <!--<many-to-one name="event"/>-->
+        <!--<many-to-one name="member"/>-->
+        <!--&lt;!&ndash;<many-to-one name="event">&ndash;&gt;-->
+        <!--&lt;!&ndash;<join-column name="ID"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;</many-to-one>&ndash;&gt;-->
+        <!--&lt;!&ndash;<many-to-one name="member">&ndash;&gt;-->
+        <!--&lt;!&ndash;<join-column name="member_id"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;</many-to-one>&ndash;&gt;-->
+        <!--</embeddable>-->
+
+
+        <!--<entity class="code.model.DegreeClass">-->
+        <!--<table name="DegreeGroupClass"/>-->
+        <!--<inheritance strategy="SINGLE_TABLE"/>-->
+        <!--<discriminator-column name="TYPE" discriminator-type="STRING" length="20"/>-->
+        <!--<discriminator-value>Class</discriminator-value>-->
+        <!--<attributes>-->
+        <!--<id name="id">-->
+        <!--<column name="degreeGroupClass_id"/>-->
+        <!--</id>-->
+        <!--<basic name="title" length="50"/>-->
+        <!--<basic name="mail" length="50"/>-->
+        <!--<many-to-one name="parentId">-->
+        <!--<join-column name="id"/>-->
+        <!--</many-to-one>-->
+        <!--<one-to-many name="subClasses" mapped-by="parentId">-->
+        <!--<cascade>-->
+        <!--<cascade-all/>-->
+        <!--</cascade>-->
+        <!--</one-to-many>-->
+        <!--</attributes>-->
+        <!--</entity>-->
+
+        <!-- Funktionierendes DFegreeGroupClass mit Id als PrimaryKey-->
+        <!--
+         <entity class="code.model.DegreeClass">
+            <table name="DegreeGroupClass"/>
+            <inheritance strategy="SINGLE_TABLE"/>
+            <discriminator-column name="TYPE" discriminator-type="STRING" length="20"/>
+            <discriminator-value>Class</discriminator-value>
+            <attributes>
+                <id name="id">
+                    <column name="degree_class_id"/>
+                </id>
+                <basic name="title"/>
+                <basic name="mail" length="50"/>
+                <many-to-one name="parentId" nullable="true">
+                    <join-column name="id"/>
+                </many-to-one>
+                <one-to-many name="subClasses" mapped-by="parentId">
+                    <cascade>
+                        <cascade-all/>
+                    </cascade>
+                </one-to-many>
+                <many-to-many name="news" mapped-by="degreeClass">
+                    <cascade>
+                        <cascade-all/>
+                    </cascade>
+                </many-to-many>
+                <many-to-many name="events" mapped-by="degreeGroupClass"/>
+                <many-to-many name="member" mapped-by="degreeGroupClass"/>
+            </attributes>
+        </entity>
+
+        <entity class="code.model.DegreeGroup">
+            <discriminator-value>Group</discriminator-value>
+        </entity>
+        -->
