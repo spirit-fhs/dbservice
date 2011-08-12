@@ -1,0 +1,7 @@
+Dbservice using jpa reference implementation eclipselink 2.3 to map postgresql. Also include Lift framework to provide a RESTful access. 
+
+startup:
+
+1. change credentials in src\main\resources\META-INF\persistence.xml
+2. sbt update compile package
+4. copy *.war file into webapps folder of Tomcat
