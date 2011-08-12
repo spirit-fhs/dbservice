@@ -1,4 +1,4 @@
-Dbservice using jpa reference implementation eclipselink 2.3 to map postgresql. Also include Lift framework to provide a RESTful access. 
+Dbservice using jpa reference implementation eclipselink 2.3 as ORM for postgresql. Also include Lift framework to provide a RESTful access. 
 
 startup:
 
