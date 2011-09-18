@@ -7,14 +7,11 @@ import net.liftweb.http._
 import net.liftweb.json._
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 11.04.11
- * Time: 09:14
- * To change this template use File | Settings | File Templates.
+ * Provides an RESTFul API to invoke database operations
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
-
 object ServiceApi extends RestHelper {
 
   println("Konstruktor der Service API")
@@ -188,24 +185,7 @@ object ServiceApi extends RestHelper {
       withBody.invoke(req, params, 201, connector.postAppointment)
     }
 
-    // case _ => NotFoundResponse("Bad URI4")
+    case _ => NotFoundResponse("Bad URI4")
   }
 
 }
-
-
-
-
-//geht nur mit der ServJx Methode
-//Nachteil ist das man nicht selber die Response zusammenstellen kann
-//implicit def toResponseByAccepts: JxCvtPF[JValue] = {
-//  case (JsonSelect, response, _) => response: JValue
-//  case (XmlSelect, response, _) => response: Node
-//}
-
-//id muss Int sein --> besser man verwendet AsLong aus liftweb.Helpers._
-//object MyId {
-//  def unapply(id: String): Option[Int] = tryo {
-//    id.toInt
-//  } orElse None
-//}

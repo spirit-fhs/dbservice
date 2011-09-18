@@ -7,13 +7,11 @@ import net.liftweb.json.JsonAST.{JNull, JValue}
 import code.Helper
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 09.05.11
- * Time: 22:15
- * To change this template use File | Settings | File Templates.
+ * This is the model of a comment
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 class NewsComment extends Converter {
 
   var comment_id: Long = _
@@ -52,7 +50,9 @@ class NewsComment extends Converter {
     res
   }
 
-
+  /**
+   * This function creates a creation date and will be executed before the data is stored in the database
+   */
   def prePersist() = {
     this.creationDate = Helper.dateToIsoDate(new Date)
   }

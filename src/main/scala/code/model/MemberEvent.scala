@@ -1,15 +1,11 @@
 package code.model
 
-import javax.persistence._
-
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 12.05.11
- * Time: 15:02
- * To change this template use File | Settings | File Templates.
+ * This is the model of a event from a member
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 class MemberEvent {
 
   var qualifier: String = _
@@ -18,4 +14,7 @@ class MemberEvent {
 
 }
 
+/**
+ * This case class represents the primary key
+ */
 case class MemberEventPK(var event: Long, var member: String)

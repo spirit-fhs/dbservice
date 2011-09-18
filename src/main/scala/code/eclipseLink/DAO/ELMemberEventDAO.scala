@@ -7,22 +7,20 @@ import javax.persistence.{EntityManagerFactory, EntityManager}
 import net.liftweb.json.JsonAST.{JValue, JInt, JField, JString}
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 25.06.11
- * Time: 21:23
- * To change this template use File | Settings | File Templates.
+ * This class represents a DAO for events from a member
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 object ELMemberEventDAO {
   val con = MyDB.factory.getConnection().asInstanceOf[EntityManagerFactory]
 
   def apply() = new ELMemberEventDAO(con.createEntityManager())
 
-  def apply(em: EntityManager) = new ELMemberEventDAO(em, true)
+  def apply(em: EntityManager) = new ELMemberEventDAO(em)
 }
 
-class ELMemberEventDAO(em: EntityManager, isNestedTransaction: Boolean = false) extends AbstractPersistence[MemberEvent](em, isNestedTransaction) with code.DAOInterfaces.MemberEventDAO {
+class ELMemberEventDAO(em: EntityManager) extends AbstractPersistence[MemberEvent](em) with code.DAOInterfaces.MemberEventDAO {
 
   def delete(params: Map[String, List[String]]): JValue = JNull
 

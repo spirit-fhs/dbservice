@@ -12,8 +12,17 @@ import net.liftweb.http.{UnsupportedMediaTypeResponse, Req, LiftResponse}
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * This Class is used when the http request has a body
+ *
+ * @version
+ * @author Benjamin Lüdicke
+ */
 class WithBody extends Invoke {
 
+  /**
+   * Convert XML body to JSON
+   */
   private def bodyToJson(req: Req): Box[JValue] = {
     req.contentType match {
       case Full("application/json") => {
@@ -24,6 +33,9 @@ class WithBody extends Invoke {
     }
   }
 
+  /**
+   * Execute the bodyToJson Method
+   */
   override def start(req: Req, params: Map[String, List[String]], successCode: Int,
                      f: (JValue, Map[String, List[String]]) => JValue): LiftResponse = {
 

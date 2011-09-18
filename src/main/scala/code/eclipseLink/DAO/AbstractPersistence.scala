@@ -8,21 +8,23 @@ import net.liftweb.json.JsonAST._
 import code.Helper
 import org.eclipse.persistence.queries.ReadAllQuery
 import javax.persistence.{EntityTransaction, Query, EntityManager}
-import java.lang.NumberFormatException
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 17.06.11
- * Time: 14:35
- * To change this template use File | Settings | File Templates.
+ * This class is provides standard functions to save or get data from the database
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
-
-abstract class AbstractPersistence[T <: AnyRef : ClassManifest](em: EntityManager, isNestedTransaction: Boolean) {
+abstract class AbstractPersistence[T <: AnyRef : ClassManifest](em: EntityManager) {
 
   private[this] val readAll = new ReadAllQuery(classManifest[T].erasure)
 
+  /**
+   * Concatenate all Expressions with "and"
+   *
+   * @param list of expressions
+   * @return returns a concatenated expression
+   */
   def concatQuerysWithAnd(exp: List[Expression]): Expression = {
     val complex: Expression = null
     exp.foldLeft(complex) {
@@ -31,7 +33,12 @@ abstract class AbstractPersistence[T <: AnyRef : ClassManifest](em: EntityManage
       case (r, c) if (r == null || c == null) => r
     }
   }
-
+  /**
+   * Concatenate all Expressions with "or"
+   *
+   * @param list of expressions
+   * @return returns a concatenated expression
+   */
   def concatQuerysWithOr(exp: List[Expression]): Expression = {
     val complex: Expression = null
     exp.foldLeft(complex) {
@@ -41,6 +48,9 @@ abstract class AbstractPersistence[T <: AnyRef : ClassManifest](em: EntityManage
     }
   }
 
+  /**
+   * Get a database entity by given id
+   */
   def getResourceById[T <: AnyRef](clazz: Class[T], pk: Any): T = {
     val res = em.find(clazz, pk)
     if (res == null)
@@ -48,10 +58,16 @@ abstract class AbstractPersistence[T <: AnyRef : ClassManifest](em: EntityManage
     res
   }
 
+  /**
+   * Adds an order by to the query
+   */
   def addOrderBy(orderExpression: Expression): Unit = {
     readAll.addOrdering(orderExpression)
   }
 
+  /**
+   * Get some entities by a given expression
+   */
   def getResourceByExpression(expressions: List[Expression]): List[T] = {
     val jpaEm = JpaHelper.getEntityManager(em)
     val exp: Expression = concatQuerysWithAnd(expressions)
@@ -63,6 +79,9 @@ abstract class AbstractPersistence[T <: AnyRef : ClassManifest](em: EntityManage
     result
   }
 
+  /**
+   * Map some data to the model and save it into the database
+   */
   def saveResource(objs: Map[String, AnyRef], json: JValue,
                   newObj: T = classManifest[T].erasure.newInstance.asInstanceOf[T]): T = {
     val methods = classManifest[T].erasure.getMethods filter (_.getName.endsWith("_$eq"))
@@ -104,31 +123,33 @@ abstract class AbstractPersistence[T <: AnyRef : ClassManifest](em: EntityManage
     newObj
   }
 
+  /**
+   * Invoke a given function and do expression handling
+   */
   def invoke (f:()=> AnyRef): AnyRef = {
-    var tx: EntityTransaction = null
-    if (!isNestedTransaction) tx = em.getTransaction
+    var tx: EntityTransaction = em.getTransaction
     try {
-      if (!isNestedTransaction) tx.begin
+      if (!tx.isActive) tx.begin
       val newObj = f()
-      if (!isNestedTransaction) tx.commit
+      if (!tx.isActive) tx.commit
       newObj
     } catch {
       case ex: code.exceptions.FormatedException => {
-        if (!isNestedTransaction) tx.rollback
+        if (!tx.isActive) tx.rollback
         throw ex
       }
       case ex => {
-        if (!isNestedTransaction) tx.rollback()
-        ex.printStackTrace()
+        if (!tx.isActive) tx.rollback()
         throw new code.exceptions.UnknownErrorException
       }
     } finally {
-      if (!isNestedTransaction) em.close
+      if (!tx.isActive) em.close
     }
   }
 
+  /**
+   * Delete a entity
+   */
   def deleteResource[T <: AnyRef](obj: T) = em.remove(obj)
 
 }
-//json: JValue, params: Map[String, List[String]],
-//JValue, Map[String, List[String]]

@@ -3,13 +3,14 @@ package code.model
 import net.liftweb.json.JsonAST.JValue
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 05.06.11
- * Time: 14:21
- * To change this template use File | Settings | File Templates.
+ * This trait is to implemented when a new models are created
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 trait Converter {
+  /**
+   * Transform the model to JSON
+   */
   def objectToJValue : JValue
 }

@@ -7,13 +7,11 @@ import net.liftweb.json.JsonAST.{JNull, JValue}
 import code.Helper
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 12.05.11
- * Time: 13:25
- * To change this template use File | Settings | File Templates.
+ * This is the model of an event
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 class Event extends Converter {
   var event_id: Long = _
   var expireDate: Date = _

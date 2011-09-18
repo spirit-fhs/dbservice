@@ -9,13 +9,11 @@ import code.Helper
 
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 19.05.11
- * Time: 15:24
- * To change this template use File | Settings | File Templates.
+ * This is the model of an appointment
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 class Appointment extends Converter {
   var appointment_id: Long = _
   var childAppointment: Appointment = _

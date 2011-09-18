@@ -8,6 +8,12 @@ package code
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * This object holds the DAOFactory for the reason to return a database surrogate
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
+ */
 object MyDB {
   var factory: DAOFactory = null
 }

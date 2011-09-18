@@ -11,6 +11,12 @@ import net.liftweb.http.{LiftResponse, Req}
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * This Class is used when the http request has no body
+ *
+ * @version
+ * @author Benjamin Lüdicke
+ */
 class WithoutBody extends Invoke{
 
   override def start(req: Req, params: Map[String, List[String]], successCode: Int,

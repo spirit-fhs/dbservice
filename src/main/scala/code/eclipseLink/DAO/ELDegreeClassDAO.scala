@@ -8,22 +8,20 @@ import javax.persistence.{EntityManagerFactory, EntityManager}
 import code.model.DegreeClass
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 12.06.11
- * Time: 17:37
- * To change this template use File | Settings | File Templates.
+ * This class represents a DAO for DegreeClass
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 object ELDegreeClassDAO {
   val con = MyDB.factory.getConnection().asInstanceOf[EntityManagerFactory]
 
   def apply() = new ELDegreeClassDAO(con.createEntityManager())
 
-  def apply(em: EntityManager) = new ELDegreeClassDAO(em, true)
+  def apply(em: EntityManager) = new ELDegreeClassDAO(em)
 }
 
-class ELDegreeClassDAO(em: EntityManager, isNestedTransaction: Boolean = false) extends AbstractPersistence[DegreeClass](em, isNestedTransaction) with code.DAOInterfaces.DegreeClassDAO {
+class ELDegreeClassDAO(em: EntityManager) extends AbstractPersistence[DegreeClass](em) with code.DAOInterfaces.DegreeClassDAO {
 
   def read(params: Map[String, List[String]]): List[DegreeClass] = {
     def function(): AnyRef = {

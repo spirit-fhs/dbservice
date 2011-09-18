@@ -4,13 +4,12 @@ import DAOInterfaces._
 import eclipseLink.EclipseLinkDAOFactory
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 17.07.11
- * Time: 16:42
- * To change this template use File | Settings | File Templates.
+ * 1. Provides some methods to implement by a DAOFactory
+ * 2. Is a factory class to get a DAOFactory
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 object DAOFactory{
   val ECLIPSELINK = 1
 

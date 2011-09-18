@@ -2,16 +2,14 @@ package code.model
 
 import net.liftweb.json.JsonAST.{JNull, JValue}
 import net.liftweb.json.JsonDSL._
-import code.Helper
+
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 19.05.11
- * Time: 15:31
- * To change this template use File | Settings | File Templates.
+ * This is the model of a location
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 class Location {
   var building: String = _
   var room: String = _
@@ -26,7 +24,9 @@ class Location {
       this.getJRoom
     res
   }
-
 }
 
+/**
+ * This case class represents the primary key of a location
+ */
 case class LocationPK(var building: String, var room: String)

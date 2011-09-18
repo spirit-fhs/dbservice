@@ -6,13 +6,8 @@ import DAO._
 import javax.persistence.{EntityManagerFactory, Persistence}
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 17.07.11
- * Time: 17:22
- * To change this template use File | Settings | File Templates.
+ * This class represents a DAOFactory and use EclipseLink as ORM
  */
-
 class EclipseLinkDAOFactory extends DAOFactory{
 
   private val connection = Persistence.createEntityManagerFactory("TestUnit")

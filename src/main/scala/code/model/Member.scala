@@ -3,17 +3,13 @@ package code.model
 import net.liftweb.json.JsonDSL._
 import scala.collection.JavaConverters._
 import net.liftweb.json.JsonAST.{JNull, JValue}
-import code.Helper
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 06.05.11
- * Time: 16:58
- * To change this template use File | Settings | File Templates.
+ * This is the model of a member
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
-
 object Member {
   val STUDENT: String = "student"
   val LECTURER: String = "lecturer"
@@ -46,6 +42,7 @@ class Member extends Converter {
 
 }
 
+//If you use annotations sees it this way
 
 //@Entity
 //@Table(name = "Member")

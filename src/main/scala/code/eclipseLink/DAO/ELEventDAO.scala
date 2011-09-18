@@ -11,22 +11,20 @@ import javax.persistence.{EntityManagerFactory, EntityManager}
 import code.{Helper, MyDB}
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 12.06.11
- * Time: 17:47
- * To change this template use File | Settings | File Templates.
+ * This class represents a DAO for events
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 object ELEventDAO {
   val con = MyDB.factory.getConnection().asInstanceOf[EntityManagerFactory]
 
   def apply() = new ELEventDAO(con.createEntityManager())
 
-  def apply(em: EntityManager) = new ELEventDAO(em, true)
+  def apply(em: EntityManager) = new ELEventDAO(em)
 }
 
-class ELEventDAO(em: EntityManager, isNestedTransaction: Boolean = false) extends AbstractPersistence[Event](em, isNestedTransaction) with code.DAOInterfaces.EventDAO {
+class ELEventDAO(em: EntityManager) extends AbstractPersistence[Event](em) with code.DAOInterfaces.EventDAO {
 
   def read(params: Map[String, List[String]]): List[Event] = {
     def function(): AnyRef = {

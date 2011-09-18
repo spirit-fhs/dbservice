@@ -8,13 +8,11 @@ import util.parsing.json.JSON
 import net.liftweb.json._
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 11.05.11
- * Time: 22:30
- * To change this template use File | Settings | File Templates.
+ * This is the model of a class or group
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 class DegreeClass extends Converter {
   var class_id: Long = _
   var title: String = _

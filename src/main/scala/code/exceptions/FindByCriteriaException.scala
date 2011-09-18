@@ -7,13 +7,11 @@ import xml.Node
 import net.liftweb.json.Xml
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 08.06.11
- * Time: 10:17
- * To change this template use File | Settings | File Templates.
+ * This class is used when no entities was found in the database
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 class FindByCriteriaException(msg: String = "Can not find item by given criteria!") extends Exception with FormatedException{
 
   val code = 400

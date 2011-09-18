@@ -6,13 +6,11 @@ import xml.Node
 import net.liftweb.json.Xml
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 15.07.11
- * Time: 22:25
- * To change this template use File | Settings | File Templates.
+ * This class is used when the member has no permissions to change values in entities
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 class PermissionException (msg: String = "No permission!") extends Exception with FormatedException{
   def getErrorName: String = this.getClass.getName
 

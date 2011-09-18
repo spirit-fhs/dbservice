@@ -11,23 +11,20 @@ import code.{MyDB, Helper}
 import javax.persistence.{EntityManagerFactory, EntityManager}
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 12.06.11
- * Time: 17:21
- * To change this template use File | Settings | File Templates.
+ * This class represents a DAO for news
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
-
 object ELNewsDAO {
   val con = MyDB.factory.getConnection().asInstanceOf[EntityManagerFactory]
 
   def apply() = new ELNewsDAO(con.createEntityManager())
 
-  def apply(em: EntityManager) = new ELNewsDAO(em, true)
+  def apply(em: EntityManager) = new ELNewsDAO(em)
 }
 
-class ELNewsDAO(em: EntityManager, isNestedTransaction: Boolean = false) extends AbstractPersistence[News](em, isNestedTransaction) with code.DAOInterfaces.NewsDAO {
+class ELNewsDAO(em: EntityManager) extends AbstractPersistence[News](em) with code.DAOInterfaces.NewsDAO {
 
   def create(json: JValue): News = {
     def function(): AnyRef = {
@@ -55,7 +52,7 @@ class ELNewsDAO(em: EntityManager, isNestedTransaction: Boolean = false) extends
     def function(): AnyRef = {
       val eb = new ExpressionBuilder
       var expressions: List[Expression] = Nil
-      params.keys foreach {
+      params.keySet foreach {
         key => {
           key match {
             case "news_id" => return params.get(key).get map (news_id => getResourceById(classOf[News], news_id.toLong))

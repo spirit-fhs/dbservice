@@ -11,6 +11,8 @@ import java.net.URL
 /**
  * A class that's instantiated early and run.  It allows the application
  * to modify lift's environment
+ *
+ * 1. Responsible for http basic authentication
  */
 class Boot {
   def boot {
@@ -40,7 +42,6 @@ class Boot {
     //select a appropriate database factory
     MyDB.factory = DAOFactory.getDAOFactory(DAOFactory.ECLIPSELINK)
     LiftRules.unloadHooks.append(MyDB.factory.closeConnection)
-
 
     LiftRules.statelessDispatchTable.append(ServiceApi)
   }

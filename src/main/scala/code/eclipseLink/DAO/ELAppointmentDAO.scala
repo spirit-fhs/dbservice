@@ -9,22 +9,20 @@ import javax.persistence.{EntityManagerFactory, EntityManager}
 import code.exceptions.MappingException
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 20.06.11
- * Time: 22:32
- * To change this template use File | Settings | File Templates.
+ * This class represents a DAO for appointments
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 object ELAppointmentDAO {
   val con = MyDB.factory.getConnection().asInstanceOf[EntityManagerFactory]
 
   def apply() = new ELAppointmentDAO(con.createEntityManager())
 
-  def apply(em: EntityManager) = new ELAppointmentDAO(em, true)
+  def apply(em: EntityManager) = new ELAppointmentDAO(em)
 }
 
-class ELAppointmentDAO(em: EntityManager, isNestedTransaction: Boolean = false) extends AbstractPersistence[Appointment](em, isNestedTransaction) with code.DAOInterfaces.AppointmentDAO {
+class ELAppointmentDAO(em: EntityManager) extends AbstractPersistence[Appointment](em) with code.DAOInterfaces.AppointmentDAO {
 
   def delete(params: Map[String, List[String]]): JValue = {
     throw new code.exceptions.UnsupportedOperationException

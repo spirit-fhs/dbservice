@@ -11,22 +11,20 @@ import code.exceptions.{UnknownErrorException, FindByCriteriaException, Permissi
 import net.liftweb.json.JsonDSL._
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 12.06.11
- * Time: 17:34
- * To change this template use File | Settings | File Templates.
+ * This class represents a DAO for member
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 object ELMemberDAO {
   val con = MyDB.factory.getConnection().asInstanceOf[EntityManagerFactory]
 
   def apply() = new ELMemberDAO(con.createEntityManager())
 
-  def apply(em: EntityManager) = new ELMemberDAO(em, true)
+  def apply(em: EntityManager) = new ELMemberDAO(em)
 }
 
-class ELMemberDAO(em: EntityManager, isNestedTransaction: Boolean = false) extends AbstractPersistence[Member](em, isNestedTransaction) with code.DAOInterfaces.MemberDAO {
+class ELMemberDAO(em: EntityManager) extends AbstractPersistence[Member](em) with code.DAOInterfaces.MemberDAO {
 
   def read(params: Map[String, List[String]]): List[Member] = {
     def function(): AnyRef = {

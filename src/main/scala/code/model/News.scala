@@ -8,14 +8,11 @@ import net.liftweb.json.JsonAST.{JNull, JValue}
 import code.Helper
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 09.05.11
- * Time: 15:32
- * To change this template use File | Settings | File Templates.
+ * This is the model of a news
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
-
 class News extends Converter {
 
   var news_id: Long = _
@@ -82,13 +79,17 @@ class News extends Converter {
           )))
     res
   }
-
+  /**
+   * This function creates a creation date and will be executed before the data is stored in the database
+   */
   def prePersist() = {
     val date = Helper.dateToIsoDate(new Date)
     this.lastModified = date
     this.creationDate = date
   }
-
+  /**
+   * This function changes the property lastModified and will be executed before the data is updated in the database
+   */
   def preUpdate() = {
     this.lastModified = Helper.dateToIsoDate(new Date)
   }

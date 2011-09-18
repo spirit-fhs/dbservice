@@ -6,13 +6,11 @@ import xml.Node
 import net.liftweb.json.Xml
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 13.06.11
- * Time: 14:10
- * To change this template use File | Settings | File Templates.
+ * This class is used when an unknown error occurs
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 class UnknownErrorException(msg: String = "An unknown error has occured!") extends Exception with FormatedException{
   def getErrorName: String = this.getClass.getName
 

@@ -6,13 +6,11 @@ import xml.Node
 import net.liftweb.json.Xml
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 23.07.11
- * Time: 14:25
- * To change this template use File | Settings | File Templates.
+ * This class is used when a function is not supported at this moment
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 class UnsupportedOperationException(msg: String = "This is an unsupported operation!") extends Exception with FormatedException{
   def getErrorName: String = this.getClass.getName
 

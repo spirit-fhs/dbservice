@@ -6,13 +6,11 @@ import xml.Node
 import net.liftweb.json.Xml
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 11.06.11
- * Time: 14:01
- * To change this template use File | Settings | File Templates.
+ * This class is used when JSON values are not mapped by the model
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 class MappingException(msg: String = "Error while convert http body to an object") extends Exception with FormatedException{
   def getErrorName: String = this.getClass.getName
 

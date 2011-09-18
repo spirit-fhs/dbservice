@@ -11,22 +11,20 @@ import code.exceptions.{FindByCriteriaException, UnknownErrorException, Permissi
 import ch.qos.logback.core.joran.conditional.ElseAction
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 12.06.11
- * Time: 17:46
- * To change this template use File | Settings | File Templates.
+ * This class represents a DAO for comments
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 object ELNewsCommentDAO {
   val con = MyDB.factory.getConnection().asInstanceOf[EntityManagerFactory]
 
   def apply() = new ELNewsCommentDAO(con.createEntityManager())
 
-  def apply(em: EntityManager) = new ELNewsCommentDAO(em, true)
+  def apply(em: EntityManager) = new ELNewsCommentDAO(em)
 }
 
-class ELNewsCommentDAO(em: EntityManager, isNestedTransaction: Boolean = false) extends AbstractPersistence[NewsComment](em, isNestedTransaction) with code.DAOInterfaces.NewsCommentDAO {
+class ELNewsCommentDAO(em: EntityManager) extends AbstractPersistence[NewsComment](em) with code.DAOInterfaces.NewsCommentDAO {
 
   def create(json: JValue): NewsComment = {
     def function(): AnyRef = {

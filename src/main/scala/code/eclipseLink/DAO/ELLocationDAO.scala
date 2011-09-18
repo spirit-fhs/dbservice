@@ -6,22 +6,20 @@ import code.MyDB
 import javax.persistence.{EntityManagerFactory, EntityManager}
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 19.06.11
- * Time: 21:48
- * To change this template use File | Settings | File Templates.
+ * This class represents a DAO for locations
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
-
 object ELLocationDAO {
   val con = MyDB.factory.getConnection().asInstanceOf[EntityManagerFactory]
 
   def apply() = new ELLocationDAO(con.createEntityManager())
 
-  def apply(em: EntityManager) = new ELLocationDAO(em, true)
+  def apply(em: EntityManager) = new ELLocationDAO(em)
 }
 
-class ELLocationDAO(em: EntityManager, isNestedTransaction: Boolean = false) extends AbstractPersistence[Location](em, isNestedTransaction) with code.DAOInterfaces.LocationDAO {
+class ELLocationDAO(em: EntityManager) extends AbstractPersistence[Location](em) with code.DAOInterfaces.LocationDAO {
 
   def delete(params: Map[String, List[String]]) = JNull
 

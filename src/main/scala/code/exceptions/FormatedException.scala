@@ -4,16 +4,30 @@ import net.liftweb.json.JsonAST.JValue
 import xml.Node
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 13.06.11
- * Time: 15:21
- * To change this template use File | Settings | File Templates.
+ * This trait is to be implemented when new exceptions are created
+ *
+ * @version 1.0
+ * @author Benjamin Lüdicke
  */
 
 trait FormatedException {
+  /**
+   * Get the error message as JSON
+   */
   def getErrorAsJson: JValue
+
+  /**
+   * get the error message as XML
+   */
   def getErrorAsXml : Node
+
+  /**
+   * Get error message
+   */
   def getMessage : String
+
+  /**
+   * get the http code
+   */
   def getHttpStatusCode : Int
 }
